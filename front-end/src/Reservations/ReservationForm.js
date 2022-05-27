@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { createReservation } from "../utils/api";
 
 function ReservationForm() {
-
   const initialFormState = {
     first_name: "",
     last_name: "",
@@ -12,7 +11,7 @@ function ReservationForm() {
     reservation_time: "",
     people: "",
   };
-  
+
   let history = useHistory();
   const [formData, setFormData] = useState({ ...initialFormState });
   const [isError, setIsError] = useState([]);
@@ -27,34 +26,34 @@ function ReservationForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const { people } = formData;
-    const value = {...formData, people: Number(people)}
+    const value = { ...formData, people: Number(people) };
     console.log("Submitted", formData);
-    //setFormData({ ...initialFormState });
     createReservation(value)
-    .then(() => history.push(`/dashboard?date=${formData.reservation_date}`))
-    .catch((error) =>{
-      const splitError = error.message.split("|")
-      setIsError(splitError)
-    } 
-  )};
+      .then(() => history.push(`/dashboard?date=${formData.reservation_date}`))
+      .catch((error) => {
+        const splitError = error.message.split("|");
+        setIsError(splitError);
+      });
+  };
 
-  
   const handleCancel = () => {
     history.push("/");
   };
 
-  const errorMessage = <div className="alert alert-danger">
-    Please fix the following errors:
-    <ul>
-      {isError.map((error, index) => {
-        return <li key={index}>{error}</li>
-      })}
-    </ul>
-  </div>
+  const errorMessage = (
+    <div className="alert alert-danger">
+      Please fix the following errors:
+      <ul>
+        {isError.map((error, index) => {
+          return <li key={index}>{error}</li>;
+        })}
+      </ul>
+    </div>
+  );
   return (
     <form onSubmit={handleSubmit}>
       <h2>Create Reservation</h2>
-      {isError.length ? errorMessage : null }
+      {isError.length ? errorMessage : null}
       <label htmlFor="first_name">
         First Name
         <input
@@ -76,7 +75,7 @@ function ReservationForm() {
           placeholder="Last Name"
           onChange={handleChange}
           value={formData.last_name}
-           required
+          required
         />
       </label>
       <label htmlFor="mobile_number">
@@ -129,9 +128,7 @@ function ReservationForm() {
           required
         />
       </label>
-      <button type="submit">
-        Submit
-      </button>
+      <button type="submit">Submit</button>
       <button type="cancel" onClick={handleCancel}>
         Cancel
       </button>

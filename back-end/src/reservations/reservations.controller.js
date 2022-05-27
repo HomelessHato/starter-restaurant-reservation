@@ -32,14 +32,15 @@ const validPeople = (req, res, next) => {
 function validDate(req, res, next) {
   const { data } = req.body;
   const regexDate = /^\d{4}-\d{2}-\d{2}$/;
+  const today = new Date();
+  const reservationDate = new Date(data["reservation_date"]);
+
   if (data["reservation_date"].match(regexDate) === null) {
     return next({
       status: 400,
       message: `reservation_date must be a valid date`,
     });
   }
-  const today = new Date();
-  const reservationDate = new Date(data["reservation_date"]);
   if (today > reservationDate.getTime() && reservationDate.getDay() == 1) {
     return next({
       status: 400,
@@ -63,11 +64,21 @@ function validDate(req, res, next) {
 function validTime(req, res, next) {
   const { data } = req.body;
   const regexTime = /([0-1]?\d|2[0-3]):([0-5]?\d):?([0-5]?\d)/;
+  const date = new Date(`${data.reservation_date}, ${data.reservation_time}`);
+  const minutes = date.getHours() * 60 + date.getMinutes();
+  const startingMinutes = 630;
+  const endingMinutes = 1290;
   if (data["reservation_time"].match(regexTime) === null) {
     return next({
       status: 400,
       message: `reservation_time must be a valid time`,
     });
+  }
+  if(minutes < startingMinutes || minutes > endingMinutes){
+    return next({
+      status: 400, 
+      message: "Please select a time between 10:30 and 21:30"
+    })
   }
   next();
 }

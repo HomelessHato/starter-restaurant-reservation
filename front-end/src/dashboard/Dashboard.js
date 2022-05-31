@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import DataList from "./DataList";
+import { listTables } from "../utils/api";
 /**
  * Defines the dashboard page.
  * @param date
@@ -11,6 +12,8 @@ import DataList from "./DataList";
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const [tables, setTables] = useState([]);
+
   useEffect(loadDashboard, [date]);
 
   function loadDashboard() {
@@ -19,10 +22,14 @@ function Dashboard({ date }) {
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+
+    listTables({ date }, abortController.signal)
+      .then(setTables)
+      .catch(setReservationsError);
     return () => abortController.abort();
   }
-  console.log(date)
-  console.log(reservations)
+
+  
   return (
     <main>
       <h1>Dashboard</h1>
@@ -30,7 +37,7 @@ function Dashboard({ date }) {
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <DataList reservations={reservations} date={date}/>
+      <DataList reservations={reservations} date={date} tables={tables} />
       {/* {JSON.stringify(reservations)} */}
     </main>
   );

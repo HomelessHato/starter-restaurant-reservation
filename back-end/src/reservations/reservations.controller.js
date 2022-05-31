@@ -17,6 +17,11 @@ async function list(req, res) {
   });
 }
 
+function read(req, res){
+  const {reservation: data} = res.locals;
+  res.status(200).json({data})
+}
+
 const validPeople = (req, res, next) => {
   const { data: { people } = {} } = req.body;
   if (Number(people) > 0 && typeof people === "number") {
@@ -95,6 +100,18 @@ function bodyDataHas(propertyName) {
   };
 }
 
+async function reservationExists(req, res, next){
+  const reservation = await service.read(req.params.reservationId);
+  if(reservation){
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 400,
+    message: "Reservation does not exist"
+  })
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [
@@ -108,4 +125,5 @@ module.exports = {
     validTime,
     asyncErrorBoundary(create),
   ],
+  read: [asyncErrorBoundary(reservationExists), read],
 };

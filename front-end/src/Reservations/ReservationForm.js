@@ -51,88 +51,114 @@ function ReservationForm() {
     </div>
   );
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Create Reservation</h2>
-      {isError.length ? errorMessage : null}
-      <label htmlFor="first_name">
-        First Name
-        <input
-          id="first_name"
-          type="text"
-          name="first_name"
-          placeholder="First Name"
-          onChange={handleChange}
-          value={formData.first_name}
-          required
-        />
-      </label>
-      <label htmlFor="last_name">
-        Last Name
-        <input
-          id="last_name"
-          type="text"
-          name="last_name"
-          placeholder="Last Name"
-          onChange={handleChange}
-          value={formData.last_name}
-          required
-        />
-      </label>
-      <label htmlFor="mobile_number">
-        Mobile Number
-        <input
-          id="mobile_number"
-          type="text"
-          name="mobile_number"
-          placeholder="Mobile Number"
-          onChange={handleChange}
-          value={formData.mobile_number}
-          required
-        />
-      </label>
-      <label htmlFor="reservation_date">
-        Date
-        <input
-          id="reservation_date"
-          type="date"
-          name="reservation_date"
-          placeholder="YYYY-MM-DD"
-          pattern="\d{4}-\d{2}-\d{2}"
-          onChange={handleChange}
-          value={formData.reservation_date}
-          required
-        />
-      </label>
-      <label htmlFor="reservation_time">
-        Time
-        <input
-          id="reservation_time"
-          type="time"
-          name="reservation_time"
-          placeholder="HH:MM"
-          pattern="[0-9]{2}:[0-9]{2}"
-          onChange={handleChange}
-          value={formData.reservation_time}
-          required
-        />
-      </label>
-      <label htmlFor="people">
-        People
-        <input
-          id="people"
-          type="number"
-          name="people"
-          onChange={handleChange}
-          value={formData.people}
-          min="1"
-          required
-        />
-      </label>
-      <button type="submit">Submit</button>
-      <button type="cancel" onClick={handleCancel}>
-        Cancel
-      </button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <h2>Create Reservation</h2>
+        {isError.length ? errorMessage : null}
+        <div class="row g-3">
+          <div class="col">
+            <label htmlFor="first_name">
+              First Name
+              <input
+                id="first_name"
+                type="text"
+                name="first_name"
+                class="form-control"
+                placeholder="First Name"
+                onChange={handleChange}
+                value={formData.first_name}
+                required
+              />
+            </label>
+          </div>
+          <div class="col">
+            <label htmlFor="last_name">
+              Last Name
+              <input
+                id="last_name"
+                type="text"
+                name="last_name"
+                class="form-control"
+                placeholder="Last Name"
+                onChange={handleChange}
+                value={formData.last_name}
+                required
+              />
+            </label>
+          </div>
+          <div class="col">
+            <label htmlFor="mobile_number">
+              Mobile Number
+              <input
+                id="mobile_number"
+                type="text"
+                name="mobile_number"
+                class="form-control"
+                placeholder="Mobile Number"
+                onChange={handleChange}
+                value={formData.mobile_number}
+                required
+              />
+            </label>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col">
+            <label htmlFor="reservation_date">
+              Date
+              <input
+                id="reservation_date"
+                type="date"
+                name="reservation_date"
+                placeholder="YYYY-MM-DD"
+                pattern="\d{4}-\d{2}-\d{2}"
+                class="form-control"
+                onChange={handleChange}
+                value={formData.reservation_date}
+                required
+              />
+            </label>
+          </div>
+          <div class="col">
+            <label htmlFor="reservation_time">
+              Time
+              <input
+                id="reservation_time"
+                type="time"
+                name="reservation_time"
+                placeholder="HH:MM"
+                pattern="[0-9]{2}:[0-9]{2}"
+                class="form-control"
+                onChange={handleChange}
+                value={formData.reservation_time}
+                required
+              />
+            </label>
+          </div>
+          <div class="col">
+            <label htmlFor="people">
+              People
+              <input
+                id="people"
+                type="number"
+                name="people"
+                onChange={handleChange}
+                value={formData.people}
+                class="form-control"
+                min="1"
+                required
+              />
+            </label>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit">
+          Submit
+        </button>
+        <button class="btn btn-danger" type="cancel" onClick={handleCancel}>
+          Cancel
+        </button>
+      </form>
+    </div>
   );
 }
 

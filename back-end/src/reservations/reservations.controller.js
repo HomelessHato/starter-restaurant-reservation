@@ -17,12 +17,12 @@ async function list(req, res) {
   });
 }
 
-function read(req, res){
-  const {reservation: data} = res.locals;
-  res.status(200).json({data})
+function read(req, res) {
+  const { reservation: data } = res.locals;
+  res.json({ data });
 }
 
-const validPeople = (req, res, next) => {
+function validPeople(req, res, next) {
   const { data: { people } = {} } = req.body;
   if (Number(people) > 0 && typeof people === "number") {
     next();
@@ -32,7 +32,7 @@ const validPeople = (req, res, next) => {
       message: "people must be greater than zero.",
     });
   }
-};
+}
 
 function validDate(req, res, next) {
   const { data } = req.body;
@@ -79,11 +79,11 @@ function validTime(req, res, next) {
       message: `reservation_time must be a valid time`,
     });
   }
-  if(minutes < startingMinutes || minutes > endingMinutes){
+  if (minutes < startingMinutes || minutes > endingMinutes) {
     return next({
-      status: 400, 
-      message: "Please select a time between 10:30 and 21:30"
-    })
+      status: 400,
+      message: "Please select a time between 10:30 and 21:30",
+    });
   }
   next();
 }
@@ -100,16 +100,18 @@ function bodyDataHas(propertyName) {
   };
 }
 
-async function reservationExists(req, res, next){
-  const reservation = await service.read(req.params.reservationId);
-  if(reservation){
+async function reservationExists(req, res, next) {
+  const { reservation_id } = req.params;
+  const reservation = await service.read(reservation_id);
+  if (reservation) {
     res.locals.reservation = reservation;
     return next();
+  } else {
+    return next({
+      status: 404,
+      message: `Reservation ID ${reservation_id} does not exist.`,
+    });
   }
-  next({
-    status: 400,
-    message: "Reservation does not exist"
-  })
 }
 
 module.exports = {

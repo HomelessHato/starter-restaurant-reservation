@@ -16,8 +16,7 @@ async function create(req, res) {
 async function update(req, res, next) {
   const updatedTable = {
     table_id: res.locals.table.table_id,
-    reservation_id: res.locals.reservation.reservation_id,
-    free: false,
+    reservation_id: req.body.data.reservation_id,
   };
   const data = await service.update(updatedTable);
   res.json({data})
@@ -95,7 +94,7 @@ async function tableHasCapacity(req, res, next) {
 
 function tableIsOccupied(req, res, next) {
   const { table } = res.locals;
-  return table.free
+  return !table.reservation_id
     ? next()
     : next({ status: 400, message: `This table is currently occupied` });
 }
@@ -112,6 +111,23 @@ function bodyDataHas(propertyName) {
   };
 }
 
+
+function currentlyOccupied(req,res,next){
+  if (!res.locals.table.reservation_id) {
+    return next({
+      status: 400,
+      message: "Table is currently not occupied",
+    });
+  }
+  next();
+}
+
+async function finish(req, res) {
+  const table = res.locals.table;
+  const data = await service.finish(table.table_id, table.reservation_id);
+  res.json({ data });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [validateCapacity, validateTableName, asyncErrorBoundary(create)],
@@ -123,4 +139,5 @@ module.exports = {
     tableHasCapacity,
     asyncErrorBoundary(update),
   ],
+  finish: [asyncErrorBoundary(tableExists), currentlyOccupied, asyncErrorBoundary(finish)],
 };

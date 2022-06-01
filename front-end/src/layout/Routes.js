@@ -4,10 +4,10 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
-import ReservationForm from "../Reservations/ReservationForm";
+import ReservationForm from "../components/ReservationForm"
 import useQuery from "../utils/useQuery";
-import TableForm from "../table/TableForm";
-import SeatReservation from "../SeatReservation/SeatReservation";
+import TableForm from "../components/TableForm";
+import SeatReservation from "../components/SeatReservation";
 
 /**
  * Defines all the routes for the application.

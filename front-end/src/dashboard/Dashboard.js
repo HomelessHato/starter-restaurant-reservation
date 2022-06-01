@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import DataList from "./DataList";
+import useQuery from "../utils/useQuery";
+import { next, previous, today } from "../utils/date-time";
 import { listTables } from "../utils/api";
+import { useHistory } from "react-router";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import ReservationList from "../components/ReservationList";
+import TableList from "../components/TableList";
 /**
  * Defines the dashboard page.
  * @param date
@@ -13,32 +18,65 @@ function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([]);
+  const query = useQuery();
+  const dateQuery = query.get("date");
+  const [pageDate, setPageDate] = useState(dateQuery ? dateQuery : date);
+  const history = useHistory();
 
-  useEffect(loadDashboard, [date]);
+
+  useEffect(loadDashboard, [date, pageDate]);
+
+  const nextDateHandler = () => {
+    setPageDate(next(pageDate));
+    history.push(`/dashboard?date=${next(pageDate)}`);
+  };
+
+  const previousDateHandler = () => {
+    setPageDate(previous(pageDate));
+    history.push(`/dashboard?date=${previous(pageDate)}`);
+  };
+
+  const todayHandler = () => {
+    setPageDate(today(date));
+    history.push(`/dashboard?date=${date}`);
+  };
 
   function loadDashboard() {
+    const date = pageDate;
     const abortController = new AbortController();
     setReservationsError(null);
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
 
-    listTables({ date }, abortController.signal)
+    listTables(abortController.signal)
       .then(setTables)
       .catch(setReservationsError);
     return () => abortController.abort();
   }
 
-  
   return (
     <main>
       <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
+      <div className="d-md-flex mb-3 row ml-1">
+        <h4 className="mb-0">Reservations for date {pageDate}</h4>
+      </div>
+      <div className="dashboard dashboard-nav row ml-1 mb-3">
+        <button className="btn btn-secondary" onClick={previousDateHandler}>
+          <FaAngleLeft />
+          Previous
+        </button>
+        <button className="btn btn-secondary" onClick={todayHandler}>
+          Today
+        </button>
+        <button className="btn btn-secondary" onClick={nextDateHandler}>
+          Next
+          <FaAngleRight />
+        </button>
       </div>
       <ErrorAlert error={reservationsError} />
-      <DataList reservations={reservations} date={date} tables={tables} />
-      {/* {JSON.stringify(reservations)} */}
+      <ReservationList reservations={reservations} />
+      <TableList tables={tables} loadDashboard={loadDashboard} />
     </main>
   );
 }

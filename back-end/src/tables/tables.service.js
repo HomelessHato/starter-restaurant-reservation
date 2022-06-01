@@ -22,9 +22,25 @@ function update(updatedTable){
   .update(updatedTable, "*")
   .then((records) => records[0])
 }
+
+function finish(table_id, reservation_id) {
+  return knex.transaction(async (trx) => {
+    await trx("reservations")
+      .where({ reservation_id })
+      .update({ status: "finished" });
+
+    return trx("tables")
+      .select("*")
+      .where({ table_id: table_id })
+      .update({ reservation_id: null }, "*")
+      .then((updatedRecords) => updatedRecords[0]);
+  });
+}
+
 module.exports = {
   list,
   create,
   update, 
-  read
+  read, 
+  finish
 };

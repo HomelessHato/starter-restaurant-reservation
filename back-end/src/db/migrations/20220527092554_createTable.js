@@ -4,13 +4,11 @@ exports.up = function(knex) {
         table.increments("table_id").primary();
         table.string("table_name").notNullable();
         table.integer("capacity").notNullable();
-        table.boolean("free").defaultTo(true);
-        table.integer("reservation_id").unsigned();
+        table.integer("reservation_id").defaultTo(null);
         table
         .foreign("reservation_id")
         .references("reservation_id")
         .inTable("reservations")
-        .onDelete("cascade");
         table.timestamps(true, true);
     })
 };

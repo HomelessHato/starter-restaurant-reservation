@@ -79,11 +79,8 @@ export async function createReservation(reservation, signal) {
   return await fetchJson(url, options, reservation);
 }
 
-export async function listTables(params, signal) {
+export async function listTables(signal) {
   const url = new URL(`${API_BASE_URL}/tables`);
-  Object.entries(params).forEach(([key, value]) =>
-    url.searchParams.append(key, value.toString())
-  );
   return await fetchJson(url, { headers, signal }, [])
 }
 
@@ -116,4 +113,13 @@ export async function seatReservation(reservation_id, table_id, signal) {
     signal,
   };
   return await fetchJson(url, options);
+}
+
+export async function finishTable(table_id) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "DELETE",
+    headers,
+  };
+  return await fetchJson(url, options, {});
 }

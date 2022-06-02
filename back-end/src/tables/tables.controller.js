@@ -111,6 +111,16 @@ function bodyDataHas(propertyName) {
   };
 }
 
+function reservationNotSeated(req, res, next) {
+  const reservation = res.locals.reservation;
+  if (reservation.status === "booked") {
+    return next();
+  }
+  return next({
+    status: 400,
+    message: "Reservation is already seated or finished."
+  })
+}
 
 function currentlyOccupied(req,res,next){
   if (!res.locals.table.reservation_id) {
@@ -137,6 +147,7 @@ module.exports = {
     asyncErrorBoundary(tableExists),
     tableIsOccupied,
     tableHasCapacity,
+    reservationNotSeated,
     asyncErrorBoundary(update),
   ],
   finish: [asyncErrorBoundary(tableExists), currentlyOccupied, asyncErrorBoundary(finish)],

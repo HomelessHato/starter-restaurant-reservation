@@ -15,12 +15,18 @@ function create(table) {
     .then((createdTable) => createdTable[0]);
 }
 
-function update(updatedTable){
-  return knex("tables")
-  .select("*")
-  .where({table_id: updatedTable.table_id})
-  .update(updatedTable, "*")
-  .then((records) => records[0])
+async function update(updatedTable) {
+  return knex.transaction(async (trx) => {
+    await trx("reservations")
+      .where({ reservation_id: updatedTable.reservation_id })
+      .update({ status: "seated" });
+      
+    return await knex("tables")
+      .select("*")
+      .where({ table_id: updatedTable.table_id })
+      .update(updatedTable, "*")
+      .then((updatedRecords) => updatedRecords[0]);
+  });
 }
 
 function finish(table_id, reservation_id) {

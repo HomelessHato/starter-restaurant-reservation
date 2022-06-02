@@ -1,8 +1,30 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, {useState} from "react";
+import { Link, useHistory } from "react-router-dom";
+import { cancelReservation } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 export default function Reservation({ reservation }) {
+  const history = useHistory();
+  const [error, setError] = useState(null);
+  const handleReservationCancel = async (e) => {
+    e.preventDefault();
+    try {
+      if (
+        window.confirm(
+          "Do you want to cancel this reservation? This cannot be undone."
+        )
+      ) {
+        const status = "cancelled";
+        await cancelReservation(reservation, status);
+        history.go(0);
+      }
+    } catch (error) {
+      setError(error);
+    }
+  };
   return (
+    <>
+    <ErrorAlert error={error} />
     <tr>
       <th scope="row">{reservation.reservation_id}</th>
       <td>
@@ -21,6 +43,25 @@ export default function Reservation({ reservation }) {
         : null
       }
       </td>
+      <td>
+          {reservation.status === "booked" ? (
+            <Link to={`/reservations/${reservation.reservation_id}/edit`}>
+              Edit
+            </Link>
+          ) : null}
+        </td>
+        <td>
+        <button
+            className="btn btn-link"
+            type="button"
+            name="cancel"
+            data-reservation-id-cancel={reservation.reservation_id}
+            onClick={handleReservationCancel}
+          >
+            Cancel
+          </button>
+        </td>
     </tr>
+    </>
   );
 }

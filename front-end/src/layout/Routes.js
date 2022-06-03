@@ -8,6 +8,7 @@ import ReservationForm from "../components/ReservationForm"
 import useQuery from "../utils/useQuery";
 import TableForm from "../components/TableForm";
 import SeatReservation from "../components/SeatReservation";
+import SearchPage from "../components/SearchPage";
 
 /**
  * Defines all the routes for the application.
@@ -39,6 +40,9 @@ function Routes() {
       </Route>
       <Route exact={true} path="/reservations/:reservation_id/seat">
         <SeatReservation />
+      </Route>
+      <Route path="/search">
+        <SearchPage />
       </Route>
       <Route>
         <NotFound />

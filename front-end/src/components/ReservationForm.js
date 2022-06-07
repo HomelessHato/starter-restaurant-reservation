@@ -44,6 +44,7 @@ export default function ReservationForm({
             type="text"
             className="form-control"
             required
+            pattern="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$"
             onChange={handleChange}
             value={formData.mobile_number}
           />

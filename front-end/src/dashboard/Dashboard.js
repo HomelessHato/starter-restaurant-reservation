@@ -56,6 +56,7 @@ function Dashboard({ date }) {
   }
 
   return (
+    <div>
     <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3 row ml-1">
@@ -78,6 +79,7 @@ function Dashboard({ date }) {
       <ReservationList reservations={reservations} />
       <TableList tables={tables} loadDashboard={loadDashboard} />
     </main>
+    </div>
   );
 }
 

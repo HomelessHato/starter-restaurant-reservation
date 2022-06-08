@@ -50,16 +50,17 @@ function SeatReservation() {
   }
 
   return reservation.first_name ? (
+    <div className=" container justify-content-center">
     <form onSubmit={handleSubmit}>
-      <h1>
+      <h2 className="mt-3">
         Select seating for {reservation.first_name} {reservation.last_name}'s reservation
-      </h1>
+      </h2>
       <h3>Party size: {reservation.people}</h3>
       <ErrorAlert error={error} />
       {tables.length ? (
         <>
           <label htmlFor="table">Select A Table: </label>
-          <select value={tableId} onChange={handleChange} name="table_id" required={true}>
+          <select value={tableId} onChange={handleChange} name="table_id" className="form-control" required={true}>
             <option value="">None selected</option>
             {tables.map((thisTable) => {
               return (
@@ -69,10 +70,10 @@ function SeatReservation() {
               );
             })}
           </select>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary mt-3">
             Submit
           </button>
-          <button type="button" className="btn btn-secondary ml-2" onClick={handleCancel}>
+          <button type="button" className="btn btn-secondary ml-2 mt-3" onClick={handleCancel}>
             Cancel
           </button>
         </>
@@ -80,6 +81,7 @@ function SeatReservation() {
         <p>Loading tables...</p>
       )}
     </form>
+    </div>
   ) : (
     <p>Loading reservation...</p>
   );

@@ -32,17 +32,16 @@ export default function SearchPage() {
 
   return (
     <>
-      <div className="search search-title row ml-2 mt-1">
+      <div className="search search-title row ml-2 mt-3 justify-content-center mb-3">
         <h1>Search Reservations</h1>
       </div>
       <div className="search search-error">
         <ErrorAlert error={findError} />
       </div>
 
-      <div className="search search-input input-group row mx-2">
+      <div className="search search-input input-group row mx-2 mb-4 justify-content-center">
         <input
           id="mobile_number"
-          className="form-control"
           name="mobile_number"
           placeholder="Mobile Number"
           type="text"
@@ -61,7 +60,7 @@ export default function SearchPage() {
         </div>
       </div>
       {showList ? (
-        <div className="search search-results">
+        <div className="search search-results justify-content-center">
           {foundReservations.length ? (
             <ReservationList reservations={foundReservations} />
           ) : (

@@ -9,19 +9,7 @@ export default function TableList({ tables, loadDashboard }) {
 
   return (
     <div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Capacity</th>
-            <th scope="col">Reservation #</th>
-            <th scope="col">Table Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>{tableMap}</tbody>
-      </table>
+      {tableMap}
     </div>
   );
 }

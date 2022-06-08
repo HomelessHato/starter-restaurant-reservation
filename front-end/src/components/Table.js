@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { finishTable } from "../utils/api";
 import FinishButton from "./FinishButton";
 import ErrorAlert from "../layout/ErrorAlert";
-
+import "./Table.css"
 export default function Table({ table, loadDashboard }) {
   const [error, setError] = useState(null);
   const handleFinish = async (e) => {
@@ -23,18 +23,22 @@ export default function Table({ table, loadDashboard }) {
   return (
     <>
       <ErrorAlert error={error} />
-      <tr>
-        <th scope="row">{table.table_id}</th>
-        <td>{table.table_name}</td>
-        <td>{table.capacity}</td>
-        <td>{table.reservation_id}</td>
-        <td data-table-id-status={table.table_id}>{table.reservation_id ? "occupied" : "free"}</td>
-        <td>
-          {table.reservation_id ? (
+      <div className="card border-secondary mb-3 text-center">
+        <div data-table-id-status={table.table_id} className="card-header">
+        Table ID: {table.table_id}
+        </div>
+        <div className="card-body text-secondary">
+        <p className="card-text">
+            Table Name: {table.table_name}
+          </p>
+          <p className="card-text">Table Capacity: {table.capacity}</p>
+          <p className="card-text">Reservation ID: {table.reservation_id}</p>
+          <p className="card-text" data-table-id-status={table.table_id}>{table.reservation_id ? "occupied" : "free"}</p>
+          <p className="card-text">{table.reservation_id ? (
             <FinishButton table={table} handleFinish={handleFinish} />
-          ) : null}
-        </td>
-      </tr>
+          ) : null}</p>
+      </div>
+      </div>
     </>
   );
 }

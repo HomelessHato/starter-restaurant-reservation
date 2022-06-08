@@ -9,7 +9,7 @@ export default function ReservationForm({
   mode,
 }) {
   return (
-    <>
+    <div className="ml-3 mr-3">
       <h1 className="my-3">{mode} Reservation</h1>
       <form onSubmit={submitHandler}>
         <div className="form-group">
@@ -99,6 +99,6 @@ export default function ReservationForm({
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }

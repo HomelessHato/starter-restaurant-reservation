@@ -6,7 +6,7 @@ export default function FinishButton({ table, handleFinish }) {
     data-table-id-finish={table.table_id}
     type="button" 
     onClick={handleFinish} 
-    className="btn btn-light"
+    className="btn btn-success"
     >
       Finish
     </button>

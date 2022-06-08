@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useHistory } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
 import { createTable } from "../utils/api";
+import { FaTimes, FaCheck } from "react-icons/fa"; 
 
 const TableForm = () => {
   const initialFormState = {
@@ -39,40 +40,52 @@ const TableForm = () => {
   };
 
   return (
-    <>
+    <div className="d-flex justify-content-center mt-3">
       <ErrorAlert error={error} />
       <form onSubmit={handleSubmit}>
         <h2>Create Table</h2>
-        <label htmlFor="table_name">
-          Table Name
-          <input
-          name="table_name"
-          id="table_name"
-          className="form-control"
-          value={formData.table_name}
-          onChange={handleChange}
-          required={true}
-          />
-        </label>
-        <label htmlFor="capacity">
-          Capacity
-          <input
-            type="number"
-            id="capacity"
-            name="capacity"
-            placeholder="Capacity"
-            required
-            min="1"
-            onChange={handleChange}
-            value={formData.capacity}
-          />
-        </label>
-        <button type="submit">Submit</button>
-        <button onClick={handleCancel} type="cancel">
-          Cancel
-        </button>
+        <div className="form-group">
+          <label htmlFor="table_name">
+            Table Name
+            <input
+              name="table_name"
+              id="table_name"
+              className="form-control"
+              value={formData.table_name}
+              onChange={handleChange}
+              required={true}
+            />
+          </label>
+        </div>
+        <div className="form-group">
+          <label htmlFor="capacity">
+            Capacity
+            <input
+              type="number"
+              id="capacity"
+              name="capacity"
+              className="form-control"
+              required
+              min="1"
+              onChange={handleChange}
+              value={formData.capacity}
+            />
+          </label>
+        </div>
+        <div className="form-group">
+          <button className="btn btn-primary" type="submit">
+          <FaCheck /> Submit
+          </button>
+          <button
+            onClick={handleCancel}
+            className="btn btn-secondary mr-2"
+            type="cancel"
+          >
+           <FaTimes /> Cancel
+          </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 };
 
